@@ -1,0 +1,14 @@
+[project]
+name = "re-deals"
+version = "1.0.0"
+description = "Underpriced / distressed home finder – Centerton / Bentonville AR"
+requires-python = ">=3.11"
+dependencies = [
+    "requests>=2.31",
+    "beautifulsoup4>=4.12",
+    "lxml>=5.0",
+    "playwright>=1.40.0",
+]
+
+[dependency-groups]
+dev = []
