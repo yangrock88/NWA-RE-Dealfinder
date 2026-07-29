@@ -26,7 +26,6 @@ Output shows the task name, next run time, and status (`Ready` is normal). If st
 
 **Run once and exit:**
 ```
-cd C:\projects\re_deals
 uv run python scheduler.py --once
 ```
 

@@ -9,7 +9,7 @@ The dashboard auto-refreshes every six hours via Windows Task Scheduler. When ne
 ## Quick start
 
 ```
-cd C:\projects\re_deals
+# from the project root
 uv run python run.py
 ```
 
