@@ -99,7 +99,7 @@ def get_area_median_price_per_sqft() -> float | None:
     median_value = statistics.median(zhvi.values())
     ppqft = round(median_value / _MEDIAN_SQFT_ESTIMATE, 2)
     log.info(
-        "Zillow market data: area median home value $%.0f → $%.0f/sqft "
+        f"Zillow market data: area median home value $%.0f -> $%.0f/sqft "
         "(assuming %d sqft median size)",
         median_value, ppqft, _MEDIAN_SQFT_ESTIMATE,
     )

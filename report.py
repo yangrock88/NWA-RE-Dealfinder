@@ -697,7 +697,7 @@ def generate(results: dict, output_path: str = "deals_report.html",
 
     out = Path(output_path)
     out.write_text(doc, encoding="utf-8")
-    log.info("Report → %s  (%d deals, %d total)", out.resolve(), len(deals), len(all_lst))
+    log.info("Report -> %s  (%d deals, %d total)", out.resolve(), len(deals), len(all_lst))
     return out
 
 

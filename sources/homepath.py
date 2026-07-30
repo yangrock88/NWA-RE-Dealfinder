@@ -99,7 +99,6 @@ def _parse_card(card: dict) -> dict | None:
         "https://homepath.fanniemae.com/property-finder"
         f"?address={urllib.parse.quote(city_search)}"
     )
-        )
 
     return {
         "source": "homepath_fanniemae",
