@@ -1,6 +1,8 @@
 # NWA Real Estate Deal Finder
 
-A local tool for surfacing mispriced, distressed, and non-traditional home sales in the Centerton / Bentonville / Rogers area of Northwest Arkansas. It pulls listings from Fannie Mae HomePath and Craigslist, benchmarks prices against live Zillow market data, scores each listing by deal quality, and writes a self-contained HTML dashboard you can open in any browser.
+**Live dashboard:** https://yangrock88.github.io/nwa-re-deals/deals_report.html
+
+A tool for surfacing mispriced, distressed, and non-traditional home sales in the Centerton / Bentonville / Rogers area of Northwest Arkansas. It pulls listings from Fannie Mae HomePath and Craigslist, benchmarks prices against live Zillow market data, scores each listing by deal quality, and writes a self-contained HTML dashboard you can open in any browser.
 
 The dashboard auto-refreshes every six hours via Windows Task Scheduler. When new deals appear since the last run, a desktop notification fires.
 

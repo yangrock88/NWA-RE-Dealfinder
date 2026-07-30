@@ -4,9 +4,6 @@ __pycache__/
 *.pyc
 *.pyo
 
-# Generated output — these are rebuilt on every run
-deals_report.html
-
 # Runtime data — snapshot and logs update every 6 hours; no need to track history
 data/latest.json
 data/scheduler.log

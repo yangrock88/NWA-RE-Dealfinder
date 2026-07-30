@@ -10,6 +10,14 @@ During the first full run, `scheduler.py --register` created a Windows Task Sche
 
 The task definition is written to `data/task.xml` before being registered with `schtasks /create`. That XML file is gitignored because it contains the full path to your Python executable, which is environment-specific.
 
+## GitHub Pages auto-publish
+
+After every run the scheduler commits the updated `deals_report.html` and pushes it to the repository. GitHub Pages serves the file at:
+
+https://yangrock88.github.io/nwa-re-deals/deals_report.html
+
+This happens automatically — no manual steps needed to keep the live dashboard current. Each push shows up in the commit history with a message like `Dashboard refresh — 2026-07-29 06:30`.
+
 ---
 
 ## Checking the current schedule

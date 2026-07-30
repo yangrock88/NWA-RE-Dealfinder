@@ -43,8 +43,33 @@ REPORT_PATH = HERE / "deals_report.html"
 
 DATA_DIR.mkdir(exist_ok=True)
 
+_GIT = r"C:\Program Files\Git\cmd\git.exe"
 
-# ── Snapshot helpers ───────────────────────────────────────────────────────────
+
+# ── Git auto-publish ────────────────────────────────────────────────────────────────────────
+
+def _push_report(report_path: Path) -> None:
+    """Commit the updated dashboard to git and push to GitHub Pages.
+    Runs silently; a failure here never interrupts the main pipeline."""
+    try:
+        ts = datetime.now().strftime("%Y-%m-%d %H:%M")
+        subprocess.run([_GIT, "add", str(report_path)],
+                       cwd=HERE, capture_output=True, timeout=15)
+        result = subprocess.run(
+            [_GIT, "commit", "-m", f"Dashboard refresh — {ts}"],
+            cwd=HERE, capture_output=True, text=True, timeout=15,
+        )
+        if "nothing to commit" in (result.stdout + result.stderr).lower():
+            log.debug("Git: dashboard unchanged, skipping push")
+            return
+        subprocess.run([_GIT, "push"],
+                       cwd=HERE, capture_output=True, timeout=30)
+        log.info("Dashboard pushed to GitHub Pages (%s)", ts)
+    except Exception as exc:
+        log.debug("Git push skipped: %s", exc)
+
+
+# ── Snapshot helpers ────────────────────────────────────────────────────────────────────────
 
 def _load_snapshot() -> dict:
     if SNAPSHOT_PATH.exists():
@@ -174,6 +199,9 @@ def run_once(report_path: str = str(REPORT_PATH), open_browser: bool = False) ->
     # ── 7. Generate report ─────────────────────────────────────────────────────
     from report import generate
     out = generate(results, report_path, new_addresses=new_addrs)
+
+    # ── 8. Push updated dashboard to GitHub Pages ─────────────────────────────
+    _push_report(out)
 
     elapsed = time.time() - t0
     log.info("Run complete in %.1fs | %d listings | %d deals | report: %s",
