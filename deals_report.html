@@ -256,7 +256,7 @@ tbody tr:hover td { background: #F9FAFB; }
 </style>
 </head>
 <body>
-<span id="data-med" style="display:none">190.0</span>
+<span id="data-med" style="display:none">216.99</span>
 
 <header class="app-header">
   <div class="brand">
@@ -266,10 +266,10 @@ tbody tr:hover td { background: #F9FAFB; }
       <div class="brand-sub">Centerton · Bentonville · Rogers · Bella Vista, AR</div>
     </div>
   </div>
-  <div class="header-right">Updated Jul 29, 2026 04:16 PM</div>
+  <div class="header-right">Updated Jul 30, 2026 12:28 AM</div>
 </header>
 
-<div class="stats-strip"><div class="scard" ><div class="scard-val">0</div><div class="scard-lbl">Total Listings</div></div><div class="scard click accent" data-q="deals" onclick="quickFilter('deals')"  title="Click to filter"><div class="scard-val accent">0</div><div class="scard-lbl">Deals Flagged</div></div><div class="scard click signal" data-q="below" onclick="quickFilter('below')"  title="Click to filter"><div class="scard-val signal">0</div><div class="scard-lbl">Below Market $/sqft</div></div><div class="scard" ><div class="scard-val">$190/sqft</div><div class="scard-lbl">Zillow Market Median</div></div><div class="scard click" data-q="new" onclick="quickFilter('new')"  title="Click to filter"><div class="scard-val">0</div><div class="scard-lbl">New This Run</div></div></div>
+<div class="stats-strip"><div class="scard" ><div class="scard-val">1</div><div class="scard-lbl">Total Listings</div></div><div class="scard click accent" data-q="deals" onclick="quickFilter('deals')"  title="Click to filter"><div class="scard-val accent">0</div><div class="scard-lbl">Deals Flagged</div></div><div class="scard click signal" data-q="below" onclick="quickFilter('below')"  title="Click to filter"><div class="scard-val signal">0</div><div class="scard-lbl">Below Market $/sqft</div></div><div class="scard" ><div class="scard-val">$217/sqft</div><div class="scard-lbl">Zillow Market Median</div></div><div class="scard click" data-q="new" onclick="quickFilter('new')"  title="Click to filter"><div class="scard-val">0</div><div class="scard-lbl">New This Run</div></div></div>
 <p class="hint">Click a stat to quick-filter &nbsp;·&nbsp; Use the filter bar below for custom queries</p>
 
 <div class="filter-bar"><div class="filter-row"><div class="filter-label">Filters <span class="f-chip" id="f-badge" style="display:none"></span></div><div class="fg"><label>City</label><select id="f-city" data-filter><option value="">All Cities</option></select></div><div class="fg"><label>ZIP</label><select id="f-zip" data-filter><option value="">All ZIPs</option></select></div><div class="fg"><label>Beds</label><select id="f-beds" data-filter><option value="0">Any</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option><option value="5">5+</option></select></div><div class="fg"><label>Baths</label><select id="f-baths" data-filter><option value="0">Any</option><option value="1">1+</option><option value="2">2+</option><option value="3">3+</option><option value="4">4+</option></select></div><div class="fg"><label>Price ($)</label><div class="frange"><input id="f-pmin" type="number" placeholder="Min" data-filter min="0" step="25000"><span>–</span><input id="f-pmax" type="number" placeholder="Max" data-filter min="0" step="25000"></div></div><div class="fg"><label>Sqft</label><div class="frange"><input id="f-smin" type="number" placeholder="Min" data-filter min="0" step="200"><span>–</span><input id="f-smax" type="number" placeholder="Max" data-filter min="0" step="200"></div></div><div class="fg"><label>$/sqft</label><div class="frange"><input id="f-qmin" type="number" placeholder="Min" data-filter min="0" step="10"><span>–</span><input id="f-qmax" type="number" placeholder="Max" data-filter min="0" step="10"></div></div><div class="fg"><label>Score ≥</label><input id="f-score" type="number" value="0" min="0" max="100" data-filter style="width:58px"></div><div class="fg"><label>Type</label><select id="f-type" data-filter><option value="">All Types</option><option value="fanniemae">Fannie Mae REO</option><option value="foreclosure">Foreclosure</option><option value="fsbo">FSBO / Owner</option></select></div><input type="hidden" id="f-new-only" value=""><button class="btn-clear" onclick="clearFilters()">Clear</button><div id="filter-count" class="filter-count"></div></div></div>
@@ -286,9 +286,9 @@ tbody tr:hover td { background: #F9FAFB; }
 <hr class="div">
 
 <div class="section">
-  <div class="sec-head"><h2>All Scraped Listings &nbsp;(0)</h2></div>
-  <p style="color:var(--t3);font-size:.77rem;margin-bottom:.8rem">Zillow ZHVI baseline: $190/sqft (NWA ZIP average). &#x27;Below market&#x27; flag = $156/sqft or less (82% of median).</p>
-  <p class="no-r" style="padding:.8rem 0">None.</p>
+  <div class="sec-head"><h2>All Scraped Listings &nbsp;(1)</h2></div>
+  <p style="color:var(--t3);font-size:.77rem;margin-bottom:.8rem">Zillow ZHVI baseline: $217/sqft (NWA ZIP average). &#x27;Below market&#x27; flag = $178/sqft or less (82% of median).</p>
+  <div class="tbl-wrap"><table><thead><tr><th>Address</th><th>Price</th><th>Beds/Bath</th><th>$/sqft</th><th>vs Market</th><th>DOM</th><th>Score</th><th></th></tr></thead><tbody id="tbl-body"><tr data-price="485000" data-beds="4.0" data-baths="2.0" data-sqft="0" data-ppqft="0" data-score="0" data-discount="0" data-city="nwa" data-zip="" data-source="craigslist_fsbo" data-type="fsbo" data-is-new="0"><td><a href="https://homepath.fanniemae.com/property-finder?address=NWA%20%28Rogers/Bentonville%20area%29%2C%20AR%2C%20USA" target="_blank">?</a><br><small style="color:var(--t3)">NWA (Rogers/Bentonville area), AR</small></td><td class="tp">$485,000</td><td>4bd/2ba<br><small style="color:var(--t4)"><span class="no-r" style="font-style:normal">—</span></small></td><td><span class="no-r" style="font-style:normal">—</span></td><td><span style="color:var(--t4)">—</span></td><td>—</td><td><span style="font-weight:700;color:#991B1B;background:#FEF2F2;padding:.12rem .38rem;border-radius:4px;font-size:.72rem">0</span></td><td><a class="btn-s" style="font-size:.66rem;padding:.12rem .4rem" href="https://www.google.com/maps/search/?api=1&amp;query=NWA%20%28Rogers/Bentonville%20area%29%2C%20AR" target="_blank">Map</a></td></tr></tbody></table></div>
 </div>
 
 <hr class="div">
