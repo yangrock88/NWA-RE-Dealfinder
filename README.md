@@ -4,8 +4,6 @@
 
 A tool for surfacing mispriced, distressed, and non-traditional home sales in the Centerton / Bentonville / Rogers area of Northwest Arkansas. It pulls listings from Fannie Mae HomePath and Craigslist, benchmarks prices against live Zillow market data, scores each listing by deal quality, and writes a self-contained HTML dashboard you can open in any browser.
 
-The dashboard auto-refreshes every six hours via Windows Task Scheduler. When new deals appear since the last run, a desktop notification fires.
-
 ---
 
 ## Quick start
@@ -93,25 +91,24 @@ The hardcoded value is only used as a fallback when the Zillow CSV fetch fails.
 
 ---
 
-## Scheduler
+## Running on a schedule
 
-A Windows Task Scheduler job named `NWARealEstateDealFinder` was registered during setup. It runs every six hours, updates `data/latest.json`, and regenerates the dashboard.
+Run once and open a fresh report:
 
 ```
-# Check next scheduled run
-schtasks /query /tn NWARealEstateDealFinder
+uv run python run.py
+```
 
-# Run immediately (loop every 6h, notify on new deals)
+Run continuously in the background:
+
+```
 uv run python scheduler.py
+```
 
-# Run once and exit
-uv run python scheduler.py --once
+Rebuild the report instantly from the last cached scrape (no network):
 
-# Change refresh interval to 3 hours
-uv run python scheduler.py --register --interval 180
-
-# Remove the task entirely
-schtasks /delete /tn NWARealEstateDealFinder /f
+```
+uv run python regen.py
 ```
 
 Logs are written to `data/scheduler.log`.
@@ -123,7 +120,7 @@ Logs are written to `data/scheduler.log`.
 ```
 re_deals/
 ├── run.py              Entry point — one scrape cycle, opens report
-├── scheduler.py        Auto-update daemon + Windows Task Scheduler registration
+├── scheduler.py        Background scrape loop and scheduling
 ├── regen.py            Rebuild report from last snapshot without re-scraping
 ├── config.py           Search area, score thresholds, market baseline
 ├── analysis.py         Deal scoring logic

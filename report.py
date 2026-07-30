@@ -687,7 +687,6 @@ def generate(results: dict, output_path: str = "deals_report.html",
 <footer class="app-footer">
   Sources: HomePath (Fannie Mae REO) &nbsp;·&nbsp; Zillow ZHVI (live market median) &nbsp;·&nbsp;
   Craigslist FSBO &nbsp;·&nbsp; HUD Homestore (manual). &nbsp;·&nbsp;
-  Auto-refreshes every 6h via Windows Task Scheduler. &nbsp;·&nbsp;
   Deal Score is a heuristic — verify all listings before making offers.
 </footer>
 

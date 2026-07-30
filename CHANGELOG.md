@@ -36,7 +36,6 @@
 - Stat card quick-filters with active state highlight
 - "New This Run" detection — compares current listings to `data/latest.json`
 - Windows toast notifications for new deals
-- Windows Task Scheduler integration (`scheduler.py --register`)
 - `regen.py` for instant report rebuild from cached data
 - Zillow ZHVI public CSV as live market median source (~$217/sqft for NWA)
 

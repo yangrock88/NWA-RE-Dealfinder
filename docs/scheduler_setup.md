@@ -1,80 +1,48 @@
-# Scheduler Setup
+# Running and Scheduling
 
-The tool runs automatically via Windows Task Scheduler. This document covers the initial setup, how to check status, and how to change the schedule.
-
----
-
-## How it was set up
-
-During the first full run, `scheduler.py --register` created a Windows Task Scheduler job called `NWARealEstateDealFinder`. The job runs `scheduler.py --once` every six hours, starting from the time of registration.
-
-The task definition is written to `data/task.xml` before being registered with `schtasks /create`. That XML file is gitignored because it contains the full path to your Python executable, which is environment-specific.
-
-## GitHub Pages auto-publish
-
-After every run the scheduler commits the updated `deals_report.html` and pushes it to the repository. GitHub Pages serves the file at:
-
-https://yangrock88.github.io/nwa-re-deals/deals_report.html
-
-This happens automatically — no manual steps needed to keep the live dashboard current. Each push shows up in the commit history with a message like `Dashboard refresh — 2026-07-29 06:30`.
+This document covers how to run the tool, what the output looks like, and how to troubleshoot common problems.
 
 ---
 
-## Checking the current schedule
+## Running manually
 
+**Full scrape — fetches fresh data from all sources and opens the report:**
 ```
-schtasks /query /tn NWARealEstateDealFinder
+uv run python run.py
 ```
 
-Output shows the task name, next run time, and status (`Ready` is normal). If status shows `Disabled` or `Running` when it shouldn't be, see the troubleshooting section below.
+**Single-source debug run:**
+```
+uv run python run.py --source homepath
+uv run python run.py --source craigslist
+```
 
----
+**Rebuild the report from the last cached scrape (no network requests):**
+```
+uv run python regen.py
+```
 
-## Manual runs
+**Run continuously in the background:**
+```
+uv run python scheduler.py
+```
 
 **Run once and exit:**
 ```
 uv run python scheduler.py --once
 ```
 
-**Run in a loop (keeps terminal open, runs every 6 hours):**
-```
-uv run python scheduler.py
-```
-
-**Custom interval (every 3 hours):**
-```
-uv run python scheduler.py --interval 180
-```
-
-The `--no-browser` flag suppresses auto-opening the report:
-```
-uv run python scheduler.py --once --no-browser
-```
+The `--no-browser` flag on any of the above suppresses auto-opening the report when it finishes.
 
 ---
 
-## Changing the schedule
+## GitHub Pages auto-publish
 
-To re-register the task with a different interval (in minutes):
-```
-uv run python scheduler.py --register --interval 180
-```
+After each run the scheduler commits the updated `deals_report.html` and pushes it to the repository. GitHub Pages serves the latest version at:
 
-This overwrites the existing task. If you want to verify it registered correctly:
-```
-schtasks /query /tn NWARealEstateDealFinder
-```
+https://yangrock88.github.io/NWA-RE-Dealfinder/deals_report.html
 
----
-
-## Removing the task
-
-```
-schtasks /delete /tn NWARealEstateDealFinder /f
-```
-
-This stops the automatic runs but does not delete any files.
+Each push shows up in the commit history with a timestamp message.
 
 ---
 
@@ -90,45 +58,21 @@ HH:MM:SS [INFO] NEW DEALS FOUND: 3
 HH:MM:SS [INFO] Run complete in 98.3s | 61 listings | 60 deals
 ```
 
-The log file grows without bound. If it gets large, just delete it — a new one is created on the next run.
-
----
-
-## Notifications
-
-When new deals appear (addresses present in the current run but not in `data/latest.json`), the notifier fires a Windows toast notification with the top new deal's address, price, and score. A two-tone beep also plays.
-
-Notifications require the Windows notification service to be running. If you're not seeing them, check `Settings → System → Notifications` and make sure notifications are enabled.
+The log file grows without bound. If it gets large, delete it — a new one is created on the next run.
 
 ---
 
 ## Troubleshooting
 
-**Task shows `Running` but hasn't produced output in a long time:**
-The scheduler process may have hung during a HomePath session. Kill the task:
-```
-schtasks /end /tn NWARealEstateDealFinder
-```
-Then run once manually to verify it completes:
-```
-uv run python scheduler.py --once
-```
-
-**Task shows `Disabled`:**
-Enable it:
-```
-schtasks /change /tn NWARealEstateDealFinder /enable
-```
-
-**`uv` not found when the task runs:**
-The task references the full path to your Python executable. If you reinstalled Python or uv, re-register the task:
-```
-uv run python scheduler.py --register
-```
-
 **HomePath returns 0 listings:**
-HomePath occasionally has downtime or changes their DOM structure. Run the source in isolation to check:
+HomePath occasionally has downtime or makes changes to their page structure. Run the source in isolation to check:
 ```
 uv run python run.py --source homepath
 ```
-If it returns 0, try opening `https://homepath.fanniemae.com` in a browser to confirm the site is up and the search still works as expected.
+If it returns 0, open `https://homepath.fanniemae.com` in a browser to confirm the site is up and the search still works. If the site looks fine but the tool still returns 0, there may be a DOM change that requires updating the card selectors in `sources/homepath.py`.
+
+**Zillow CSV fails:**
+When the Zillow CSV fetch fails, the tool falls back to the hardcoded `NWA_MARKET` value in `config.py`. The dashboard will still generate with that value as the $/sqft baseline. Update `NWA_MARKET["area_median_price_per_sqft"]` to a current figure if the Zillow URL has changed.
+
+**Report generates but shows 0 deals:**
+Check `data/latest.json` — if it contains 0 listings, the previous run failed silently (usually a HomePath source error). Run `uv run python run.py --source homepath` to verify HomePath is working, then do a full `uv run python run.py` to repopulate the snapshot.

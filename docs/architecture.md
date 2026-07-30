@@ -69,7 +69,7 @@ Attempts to parse `__NEXT_DATA__` JSON from Auction.com's search page. Returns 0
 
 HomePath is a React single-page application. The initial HTML response contains only the shell (header, navigation, search box, an empty div). Property listings are fetched and rendered by JavaScript after the page loads. Plain HTTP requests get the empty shell; Playwright runs a real browser that executes the JavaScript and returns the fully rendered DOM.
 
-The downside is speed: Playwright takes about 8–10 seconds per city search. Eight cities means roughly 80 seconds just for HomePath. This is acceptable for a tool running every six hours in the background.
+The downside is speed: Playwright takes about 8–10 seconds per city search. Eight cities means roughly 80 seconds just for HomePath.
 
 ---
 
