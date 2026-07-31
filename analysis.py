@@ -1,6 +1,7 @@
 """
-Deal analysis — compares active listings to area median $/sqft
-(computed from recent Redfin sold comps) and flags distressed properties.
+Deal analysis — compares active listings to the area median $/sqft
+(Zillow ZHVI market median, sold comps, or the config fallback) and
+flags distressed properties.
 """
 import logging
 import statistics
@@ -124,12 +125,20 @@ def score_listing(listing: dict, area_median: float | None) -> dict:
 
 # ── Main entry point ───────────────────────────────────────────────────────────
 
-def analyze(active_listings: list[dict], sold_comps: list[dict]) -> dict:
+def analyze(active_listings: list[dict], sold_comps: list[dict],
+            median_override: float | None = None) -> dict:
     """
     Run the full analysis pipeline.
     Returns a dict ready to be consumed by report.py.
+
+    Pass median_override (e.g. the live Zillow ZHVI median) to skip
+    comp-based median computation and score every listing once against
+    that value instead.
     """
-    area_median = compute_area_median(sold_comps)
+    area_median = (
+        median_override if median_override and median_override > 0
+        else compute_area_median(sold_comps)
+    )
     scored = [score_listing(l, area_median) for l in active_listings]
     scored.sort(key=lambda x: x["deal_score"], reverse=True)
 

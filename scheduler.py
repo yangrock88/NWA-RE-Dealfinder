@@ -14,9 +14,11 @@ The scheduler:
   4. Writes updated data/latest.json + deals_report.html
 """
 import argparse
+import importlib
 import json
 import logging
 import os
+import shutil
 import subprocess
 import sys
 import time
@@ -43,7 +45,8 @@ REPORT_PATH = HERE / "deals_report.html"
 
 DATA_DIR.mkdir(exist_ok=True)
 
-_GIT = r"C:\Program Files\Git\cmd\git.exe"
+# Prefer whatever git is on PATH; fall back to the standard install location.
+_GIT = shutil.which("git") or r"C:\Program Files\Git\cmd\git.exe"
 
 
 # ── Git auto-publish ────────────────────────────────────────────────────────────────────────
@@ -136,7 +139,6 @@ def run_once(report_path: str = str(REPORT_PATH), open_browser: bool = False) ->
     }
     for name, module_path in sources.items():
         try:
-            import importlib
             mod = importlib.import_module(module_path)
             batch = mod.fetch_listings()
             log.info("%-12s  %d listings", name, len(batch))
@@ -154,21 +156,11 @@ def run_once(report_path: str = str(REPORT_PATH), open_browser: bool = False) ->
                 seen.add(key)
             deduped.append(l)
 
-    # ── 3. Analyze ─────────────────────────────────────────────────────────────
-    from analysis import analyze, compute_area_median
-    results = analyze(deduped, [])
-
-    # Override median with Zillow data if available
+    # ── 3. Analyze (single scoring pass; Zillow median wins when available) ───
     if area_median_override and area_median_override > 0:
         log.info("Using Zillow market data: $%.0f/sqft", area_median_override)
-        # Re-score with updated median
-        from analysis import score_listing
-        rescored = [score_listing(l, area_median_override) for l in deduped]
-        rescored.sort(key=lambda x: x["deal_score"], reverse=True)
-        results["deals"] = [l for l in rescored if l["is_deal"]]
-        results["regular"] = [l for l in rescored if not l["is_deal"]]
-        results["all_listings"] = rescored
-        results["area_median_ppqft"] = area_median_override
+    from analysis import analyze
+    results = analyze(deduped, [], median_override=area_median_override)
 
     # ── 4. Compare with previous snapshot ─────────────────────────────────────
     prev = _load_snapshot()
